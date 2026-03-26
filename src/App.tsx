@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useTrans
 import { 
   Github, 
   Linkedin, 
+  Instagram,
   Mail, 
   ExternalLink, 
   Code, 
@@ -12,9 +13,13 @@ import {
   Database, 
   Sun, 
   Moon, 
-  Search, 
+  Search,
   ArrowRight, 
   Cpu, 
+  Trophy,
+  Award,
+  Gamepad2,
+  Languages,
   Layout, 
   Palette, 
   FileJson, 
@@ -22,14 +27,20 @@ import {
   Table, 
   GitBranch, 
   Monitor,
-  Menu,
-  X
+  FileText,
+  FileSpreadsheet,
+  PenTool,
+  Figma,
+  Layers
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AnimatedDock } from "@/components/ui/animated-dock";
 import Preloader from "@/components/ui/preloader";
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import GradientMenu from "@/components/ui/gradient-menu";
+import DropdownComponent from "@/components/ui/dropdown-01";
+import HighlightCard from "@/components/ui/highlight-card";
 
 // --- Data ---
 
@@ -94,19 +105,26 @@ const EDUCATION = [
 ];
 
 const SKILLS = [
-  { name: "C(DSA)", category: "Programming Language", icon: Code },
-  { name: "Python", category: "Programming Language", icon: Terminal },
-  { name: "Dart", category: "Programming Language", icon: Cpu },
+  { name: "C(With DSA)", category: "Programming Languages", icon: Code },
+  { name: "Python", category: "Programming Languages", icon: Terminal },
+  { name: "Dart", category: "Programming Languages", icon: Cpu },
   { name: "HTML", category: "Frontend", icon: Layout },
   { name: "CSS", category: "Frontend", icon: Palette },
   { name: "JavaScript", category: "Frontend", icon: FileJson },
-  { name: "Node.js", category: "Backend & Framework", icon: Server },
-  { name: "Next.js", category: "Backend & Framework", icon: Globe },
+  { name: "Python", category: "Backend & Frameworks", icon: Terminal },
+  { name: "Node.js", category: "Backend & Frameworks", icon: Server },
+  { name: "Next.js", category: "Backend & Frameworks", icon: Globe },
   { name: "Firebase", category: "Database", icon: Database },
   { name: "MySQL", category: "Database", icon: Table },
-  { name: "Flutter", category: "Tool", icon: Smartphone },
-  { name: "Git", category: "Tool", icon: GitBranch },
-  { name: "Ubuntu", category: "Operating System", icon: Monitor }
+  { name: "MS Office", category: "Tools", icon: FileText },
+  { name: "MS Excel", category: "Tools", icon: FileSpreadsheet },
+  { name: "Flutter", category: "Tools", icon: Smartphone },
+  { name: "Git", category: "Tools", icon: GitBranch },
+  { name: "Github", category: "Tools", icon: Github },
+  { name: "Canva", category: "Tools", icon: PenTool },
+  { name: "Figma", category: "Tools", icon: Figma },
+  { name: "Ubuntu Linux", category: "Operating Systems", icon: Monitor },
+  { name: "Windows", category: "Operating Systems", icon: Layers }
 ];
 
 // --- Components ---
@@ -132,7 +150,8 @@ const CustomCursor = () => {
         x: position.x - 12, 
         y: position.y - 12,
         scale: isPointer ? 2.5 : 1,
-        backgroundColor: isPointer ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0)"
+        backgroundColor: isPointer ? "var(--text-primary)" : "transparent",
+        border: `1px solid ${isPointer ? "transparent" : "var(--text-primary)"}`
       }}
       transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.5 }}
     />
@@ -175,38 +194,15 @@ const TypingAnimation = ({ phrases }: { phrases: string[] }) => {
   );
 };
 
-const Navbar = ({ theme, setTheme, isMenuOpen, setIsMenuOpen, searchQuery, setSearchQuery }: any) => {
+const Navbar = ({ theme, setTheme }: any) => {
   return (
-    <nav className="fixed top-4 left-4 right-4 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 glass-card flex items-center justify-between rounded-2xl">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl overflow-hidden accent-gradient p-0.5">
-            <img src="krrish4.png" className="w-full h-full object-cover rounded-[10px]" />
-          </div>
-          <div>
-            <h1 className="font-bold text-lg leading-none">Krish Das</h1>
-            <p className="text-[10px] opacity-60 uppercase tracking-widest mt-1">Web & App Dev</p>
-          </div>
-        </div>
-
-        <div className="hidden md:flex items-center gap-8">
-          <div className="relative group">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 group-focus-within:opacity-100 transition-opacity" />
-            <input 
-              type="text" 
-              placeholder="Search projects..." 
-              value={searchQuery}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-              className="bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-purple-500/50 w-48 transition-all"
-            />
-          </div>
-          <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="p-2 hover:bg-white/5 rounded-full transition-colors">
-            {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
-        </div>
-
-        <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          {isMenuOpen ? <X /> : <Menu />}
+    <nav className="fixed top-4 left-0 right-0 z-50 flex justify-center pointer-events-none">
+      <div className="pointer-events-auto">
+        <GradientMenu />
+      </div>
+      <div className="fixed top-8 right-8 pointer-events-auto">
+        <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="p-3 glass-card hover:bg-purple-500/10 rounded-full transition-all hover:scale-110 active:scale-95 shadow-xl">
+          {theme === "dark" ? <Sun size={20} className="text-yellow-400" /> : <Moon size={20} className="text-purple-600" />}
         </button>
       </div>
     </nav>
@@ -215,7 +211,7 @@ const Navbar = ({ theme, setTheme, isMenuOpen, setIsMenuOpen, searchQuery, setSe
 
 const Hero = () => {
   return (
-    <section className="min-h-[90vh] flex flex-col items-center justify-center text-center relative overflow-hidden">
+    <section id="home" className="min-h-[90vh] flex flex-col items-center justify-center text-center relative overflow-hidden">
       <BackgroundBeamsWithCollision className="absolute inset-0 -z-10" children={null} />
       
       <motion.div
@@ -240,7 +236,8 @@ const Hero = () => {
         <div className="pt-8 flex flex-col items-center gap-6">
           <AnimatedDock items={[
             { link: "https://github.com/Krish629", Icon: <Github />, target: "_blank" },
-            { link: "https://linkedin.com/in/krish-das", Icon: <Linkedin />, target: "_blank" },
+            { link: "https://www.linkedin.com/in/krish-das-832995351", Icon: <Linkedin />, target: "_blank" },
+            { link: "https://www.instagram.com/not._krishhhh", Icon: <Instagram />, target: "_blank" },
             { link: "mailto:krish.d.0224@inspiria.edu.in", Icon: <Mail /> }
           ]} />
           
@@ -269,9 +266,9 @@ const About = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.1 }}
-            className="relative pl-12 border-l-2 border-white/10"
+            className="relative pl-12 border-l-2 border-purple-500/20"
           >
-            <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-purple-500 border-4 border-[#071021]" />
+            <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-purple-500 border-4 border-[var(--bg-primary)]" />
             <span className="text-sm font-bold text-purple-500 uppercase tracking-widest">{edu.year}</span>
             <h3 className="text-2xl font-bold mt-2">{edu.title}</h3>
             <p className="text-lg opacity-60 mt-1">{edu.institution}</p>
@@ -308,7 +305,7 @@ const Skills = () => {
             </h3>
             <div className="flex flex-wrap gap-3">
               {SKILLS.filter(s => s.category === cat).map(skill => (
-                <div key={skill.name} className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-sm hover:border-purple-500/30 transition-colors group">
+                <div key={skill.name} className="flex items-center gap-2 px-4 py-2 glass-card rounded-xl text-sm hover:border-purple-500/30 transition-colors group">
                   <skill.icon size={16} className="text-purple-500 group-hover:scale-110 transition-transform" />
                   {skill.name}
                 </div>
@@ -321,21 +318,55 @@ const Skills = () => {
   );
 };
 
-const Projects = ({ searchQuery }: { searchQuery: string }) => {
-  const filteredProjects = PROJECTS.filter(p => 
-    p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+const Projects = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedProject, setSelectedProject] = useState("All Projects");
+
+  const projectOptions = [
+    { id: "all", label: "All Projects", description: "Show everything" },
+    ...PROJECTS.map(p => ({ id: p.id, label: p.title, description: p.category }))
+  ];
+
+  const filteredProjects = PROJECTS.filter(p => {
+    const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         p.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesDropdown = selectedProject === "All Projects" || p.title === selectedProject;
+    return matchesSearch && matchesDropdown;
+  });
 
   return (
     <section id="projects" className="py-24 max-w-7xl mx-auto px-6">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-        <div>
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
+        <div className="flex-1">
           <h2 className="text-4xl md:text-6xl font-bold accent-text">Projects</h2>
           <p className="opacity-60 mt-4 max-w-xl">A selection of my recent work, ranging from web applications to specialized security tools.</p>
         </div>
-        <div className="flex gap-4">
-          <InteractiveHoverButton text="View All" active />
+        
+        <div className="flex flex-col md:flex-row gap-4 items-center w-full lg:w-auto">
+          <div className="relative group w-full md:w-64">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 group-focus-within:opacity-100 transition-opacity" />
+            <input 
+              type="text" 
+              placeholder="Search by name or tech..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full glass-card rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-purple-500/50 transition-all"
+            />
+          </div>
+          
+          <DropdownComponent 
+            options={projectOptions} 
+            selected={selectedProject} 
+            onSelect={(opt) => setSelectedProject(opt.label)}
+            placeholder="Filter by project"
+          />
+          
+          <div className="hidden xl:block">
+            <InteractiveHoverButton text="View All" active onClick={() => {
+              setSearchQuery("");
+              setSelectedProject("All Projects");
+            }} />
+          </div>
         </div>
       </div>
 
@@ -354,10 +385,10 @@ const Projects = ({ searchQuery }: { searchQuery: string }) => {
               <div className="aspect-[16/10] overflow-hidden relative">
                 <img src={project.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                  <a href={project.githubUrl} target="_blank" className="p-3 bg-white/10 backdrop-blur-md rounded-full hover:bg-white/20 transition-colors">
+                  <a href={project.githubUrl} target="_blank" className="p-3 glass-card rounded-full hover:bg-purple-500/20 transition-colors">
                     <Github size={20} />
                   </a>
-                  <a href={project.liveUrl} target="_blank" className="p-3 bg-white/10 backdrop-blur-md rounded-full hover:bg-white/20 transition-colors">
+                  <a href={project.liveUrl} target="_blank" className="p-3 glass-card rounded-full hover:bg-purple-500/20 transition-colors">
                     <ExternalLink size={20} />
                   </a>
                 </div>
@@ -372,7 +403,7 @@ const Projects = ({ searchQuery }: { searchQuery: string }) => {
                 <p className="text-sm opacity-60 mb-6 leading-relaxed line-clamp-2">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map(tag => (
-                    <span key={tag} className="text-[10px] font-bold uppercase px-3 py-1 bg-white/5 rounded-full opacity-60">
+                    <span key={tag} className="text-[10px] font-bold uppercase px-3 py-1 glass-card rounded-full opacity-60">
                       {tag}
                     </span>
                   ))}
@@ -386,22 +417,80 @@ const Projects = ({ searchQuery }: { searchQuery: string }) => {
   );
 };
 
+const AchievementsAndCertifications = () => {
+  return (
+    <section className="py-24 max-w-7xl mx-auto px-6">
+      <div className="grid md:grid-cols-2 gap-12 justify-items-center">
+        <div className="w-full flex flex-col items-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-12 accent-text text-center">Achievements</h2>
+          <HighlightCard 
+            title="Achievements"
+            description={[
+              "Participated in Smart India Hackathon 2025",
+              "3rd Position in Intercollege Auction Based Game (DataViz-Insvaganza)",
+              "Associative Member in Computing Club of College"
+            ]}
+            icon={<Trophy className="w-8 h-8" />}
+          />
+        </div>
+        <div className="w-full flex flex-col items-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-12 accent-text text-center">Certifications</h2>
+          <HighlightCard 
+            title="Certifications"
+            description={[
+              "Python Programming – GeeksforGeeks & Udemy",
+              "Java Programming Mastery - Developers Bootcamp",
+              "Inskills Certificate for Softskills Course"
+            ]}
+            icon={<Award className="w-8 h-8" />}
+          />
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const HobbiesAndLanguages = () => {
+  return (
+    <section className="py-24 max-w-7xl mx-auto px-6">
+      <div className="grid md:grid-cols-2 gap-12 justify-items-center">
+        <div className="w-full flex flex-col items-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-12 accent-text text-center">Hobbies / Interests</h2>
+          <HighlightCard 
+            title="Hobbies"
+            description={[
+              "Coding",
+              "Learning new technologies",
+              "Online gaming (BGMI, Clash Of Clans)"
+            ]}
+            icon={<Gamepad2 className="w-8 h-8" />}
+          />
+        </div>
+        <div className="w-full flex flex-col items-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-12 accent-text text-center">Languages</h2>
+          <HighlightCard 
+            title="Languages"
+            description={[
+              "Hindi (Native)",
+              "English (Professional)"
+            ]}
+            icon={<Languages className="w-8 h-8" />}
+          />
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Footer = () => {
   return (
-    <footer className="py-20 border-t border-white/10">
+    <footer id="contact" className="py-20 border-t border-purple-500/10">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
         <div className="text-center md:text-left">
           <h2 className="text-2xl font-bold mb-2">Krish Das</h2>
           <p className="opacity-50 text-sm">Crafting digital experiences with purpose.</p>
         </div>
         
-        <div className="flex gap-8">
-          <a href="#" className="opacity-50 hover:opacity-100 transition-opacity">Home</a>
-          <a href="#about" className="opacity-50 hover:opacity-100 transition-opacity">About</a>
-          <a href="#projects" className="opacity-50 hover:opacity-100 transition-opacity">Projects</a>
-          <a href="mailto:krish.d.0224@inspiria.edu.in" className="opacity-50 hover:opacity-100 transition-opacity">Contact</a>
-        </div>
-
         <div className="text-center md:text-right">
           <p className="text-xs opacity-40">&copy; {new Date().getFullYear()} Krish Das. All rights reserved.</p>
           <p className="text-[10px] opacity-30 mt-1">Designed & Developed by Krish</p>
@@ -414,8 +503,6 @@ const Footer = () => {
 export default function App() {
   const [showPreloader, setShowPreloader] = useState(true);
   const [theme, setTheme] = useState("dark");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -447,17 +534,15 @@ export default function App() {
         <Navbar 
           theme={theme} 
           setTheme={setTheme} 
-          isMenuOpen={isMenuOpen} 
-          setIsMenuOpen={setIsMenuOpen}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
         />
 
         <main className="max-w-7xl mx-auto px-6 pt-32 pb-20">
           <Hero />
           <About />
           <Skills />
-          <Projects searchQuery={searchQuery} />
+          <Projects />
+          <AchievementsAndCertifications />
+          <HobbiesAndLanguages />
         </main>
 
         <Footer />

@@ -43,10 +43,10 @@ export const BackgroundBeamsWithCollision = ({
       {children}
       <div
         ref={containerRef}
-        className="absolute bottom-0 bg-neutral-100/5 w-full inset-x-0 pointer-events-none"
+        className="absolute bottom-0 bg-purple-500/5 w-full inset-x-0 pointer-events-none"
         style={{
           boxShadow:
-            "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset",
+            "0 0 24px rgba(138, 43, 226, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(138, 43, 226, 0.04), 0 0 4px rgba(138, 43, 226, 0.08), 0 16px 68px rgba(138, 43, 226, 0.05)",
         }}
       ></div>
     </div>

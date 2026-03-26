@@ -34,7 +34,7 @@ export const AnimatedDock = ({ className, items }: AnimatedDockProps) => {
       onMouseMove={(e: React.MouseEvent) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "mx-auto flex h-16 items-end gap-4 rounded-2xl bg-secondary/20 backdrop-blur-md border border-white/10 shadow-md px-4 pb-3",
+        "mx-auto flex h-16 items-end gap-4 rounded-2xl glass-card shadow-md px-4 pb-3",
         className,
       )}
     >
@@ -91,7 +91,7 @@ export const DockItem = ({ mouseX, children, className }: DockItemProps) => {
       ref={ref}
       style={{ width }}
       className={cn(
-        "aspect-square w-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors text-foreground flex items-center justify-center",
+        "aspect-square w-10 rounded-full bg-[var(--glass-bg)] hover:bg-[var(--glass-border)] transition-colors text-[var(--text-primary)] flex items-center justify-center",
         className
       )}
     >
