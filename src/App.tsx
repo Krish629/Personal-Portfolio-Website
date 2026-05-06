@@ -78,12 +78,12 @@ const PROJECTS = [
   {
     id: "4",
     title: "Krrish4 Single Player Game",
-    description: "An immersive single-player game developed using Python and Pygame, featuring custom mechanics and dynamic gameplay.",
-    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1000",
+    description: "An immersive single-player game developed using Python and Pygame, featuring custom mechanics and dynamic gameplay. Play as a superhero in a stylized world.",
+    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1000",
     tags: ["Python", "Pygame", "Game Dev"],
     githubUrl: "https://github.com/Krish629/Krrish4-Single-Player-Game/blob/main/main.py",
     liveUrl: "#",
-    category: "App"
+    category: "Game"
   }
 ];
 
@@ -121,7 +121,6 @@ const SKILLS = [
   { name: "HTML", category: "Frontend", icon: Layout },
   { name: "CSS", category: "Frontend", icon: Palette },
   { name: "JavaScript", category: "Frontend", icon: FileJson },
-  { name: "Python", category: "Backend & Frameworks", icon: Terminal },
   { name: "Node.js", category: "Backend & Frameworks", icon: Server },
   { name: "Next.js", category: "Backend & Frameworks", icon: Globe },
   { name: "Firebase", category: "Database", icon: Database },
@@ -156,12 +155,13 @@ const CustomCursor = () => {
   return (
     <motion.div
       className="fixed top-0 left-0 w-6 h-6 border border-white rounded-full pointer-events-none z-[9999] hidden md:block mix-blend-difference"
+      initial={{ backgroundColor: "rgba(0, 0, 0, 0)", borderColor: "#e6eef7" }}
       animate={{ 
         x: position.x - 12, 
         y: position.y - 12,
         scale: isPointer ? 2.5 : 1,
-        backgroundColor: isPointer ? "var(--text-primary)" : "transparent",
-        border: `1px solid ${isPointer ? "transparent" : "var(--text-primary)"}`
+        backgroundColor: isPointer ? "#e6eef7" : "rgba(0, 0, 0, 0)",
+        borderColor: isPointer ? "rgba(0, 0, 0, 0)" : "#e6eef7"
       }}
       transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.5 }}
     />
@@ -556,10 +556,10 @@ export default function App() {
             alt="Krish Das"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             onError={(e) => {
-              (e.target as HTMLImageElement).src = `krish.jpg`;
+              (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent("Krish Das")}&background=a855f7&color=fff&size=128`;
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
         </motion.div>
         
         <motion.div 
