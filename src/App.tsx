@@ -541,8 +541,13 @@ const Contact = () => {
         "service_z44ulnb",
         "template_me2lkyj",
         {
+          name: formState.name,
+          email: formState.email,
           from_name: formState.name,
           from_email: formState.email,
+          user_name: formState.name,
+          user_email: formState.email,
+          reply_to: formState.email,
           subject: formState.subject,
           message: formState.message,
           to_name: "Krish"
