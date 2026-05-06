@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import emailjs from '@emailjs/browser';
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from "motion/react";
 import { 
   Github, 
@@ -31,7 +32,11 @@ import {
   FileSpreadsheet,
   PenTool,
   Figma,
-  Layers
+  Layers,
+  Send,
+  MessageSquare,
+  User,
+  CheckCircle2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AnimatedDock } from "@/components/ui/animated-dock";
@@ -499,18 +504,264 @@ const HobbiesAndLanguages = () => {
   );
 };
 
+const Contact = () => {
+  const [formState, setFormState] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSent, setIsSent] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormState(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    if (error) setError("");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validation
+    if (!formState.name || !formState.email || !formState.subject || !formState.message) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(formState.email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      await emailjs.send(
+        "service_z44ulnb",
+        "template_me2lkyj",
+        {
+          from_name: formState.name,
+          from_email: formState.email,
+          subject: formState.subject,
+          message: formState.message,
+          to_name: "Krish"
+        },
+        "XEiQ5YOMh0IYu295Q"
+      );
+      
+      setIsSent(true);
+      setFormState({ name: "", email: "", subject: "", message: "" });
+      // Reset success message after 5 seconds
+      setTimeout(() => setIsSent(false), 5000);
+    } catch (err: any) {
+      console.error("EmailJS Error:", err);
+      setError("Failed to send message. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <section id="contact" className="py-24 max-w-7xl mx-auto px-6">
+      <div className="grid lg:grid-cols-2 gap-16">
+        {/* Contact Info */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="space-y-12"
+        >
+          <div>
+            <h2 className="text-4xl md:text-6xl font-bold accent-text mb-6">Let's Connect</h2>
+            <p className="text-lg opacity-60 max-w-md leading-relaxed">
+              Have a project in mind or just want to say hi? Feel free to reach out. I'm always open to new opportunities and collaborations.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <a 
+              href="mailto:krish.d.0224@inspiria.edu.in" 
+              className="flex items-center gap-6 group w-fit"
+            >
+              <div className="p-4 glass-card rounded-2xl group-hover:border-purple-500/50 transition-colors">
+                <Mail className="w-6 h-6 text-purple-500" />
+              </div>
+              <div>
+                <p className="text-sm opacity-50 font-medium uppercase tracking-widest">Email Me</p>
+                <p className="text-lg font-bold group-hover:text-purple-400 transition-colors">krish.d.0224@inspiria.edu.in</p>
+              </div>
+            </a>
+
+            <div className="flex items-center gap-4 pt-6">
+              <a 
+                href="https://github.com/Krish629" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-4 glass-card rounded-2xl hover:border-purple-500/50 hover:bg-purple-500/5 transition-all hover:-translate-y-1"
+              >
+                <Github className="w-6 h-6" />
+              </a>
+              <a 
+                href="https://www.linkedin.com/in/krish-das-832995351" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-4 glass-card rounded-2xl hover:border-purple-500/50 hover:bg-purple-500/5 transition-all hover:-translate-y-1"
+              >
+                <Linkedin className="w-6 h-6" />
+              </a>
+              <a 
+                href="https://www.instagram.com/not._krishhhh" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-4 glass-card rounded-2xl hover:border-purple-500/50 hover:bg-purple-500/5 transition-all hover:-translate-y-1"
+              >
+                <Instagram className="w-6 h-6" />
+              </a>
+            </div>
+          </div>
+
+          <div className="glass-card p-8 rounded-3xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl -mr-16 -mt-16" />
+            <h4 className="text-xl font-bold mb-2">Based in</h4>
+            <p className="opacity-60 flex items-center gap-2">
+              <Globe className="w-4 h-4 text-purple-500" />
+              West Bengal, India
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Contact Form */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="glass-card p-8 md:p-12 rounded-[2.5rem] relative"
+        >
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-bold opacity-60 ml-1">Full Name</label>
+                <div className="relative group">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 group-focus-within:opacity-100 group-focus-within:text-purple-500 transition-all" />
+                  <input
+                    type="text"
+                    name="name"
+                    value={formState.name}
+                    onChange={handleChange}
+                    placeholder="John Doe"
+                    className="w-full glass-card bg-white/5 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500/50 transition-all"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-bold opacity-60 ml-1">Email Address</label>
+                <div className="relative group">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 group-focus-within:opacity-100 group-focus-within:text-purple-500 transition-all" />
+                  <input
+                    type="email"
+                    name="email"
+                    value={formState.email}
+                    onChange={handleChange}
+                    placeholder="john@example.com"
+                    className="w-full glass-card bg-white/5 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500/50 transition-all"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold opacity-60 ml-1">Subject</label>
+              <div className="relative group">
+                <MessageSquare className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 group-focus-within:opacity-100 group-focus-within:text-purple-500 transition-all" />
+                <input
+                  type="text"
+                  name="subject"
+                  value={formState.subject}
+                  onChange={handleChange}
+                  placeholder="Project Collaboration"
+                  className="w-full glass-card bg-white/5 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500/50 transition-all"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold opacity-60 ml-1">Message</label>
+              <textarea
+                name="message"
+                value={formState.message}
+                onChange={handleChange}
+                rows={5}
+                placeholder="Tell me more about your project..."
+                className="w-full glass-card bg-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-purple-500/50 transition-all resize-none"
+              />
+            </div>
+
+            <AnimatePresence>
+              {error && (
+                <motion.p
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="text-red-400 text-sm font-medium"
+                >
+                  {error}
+                </motion.p>
+              )}
+            </AnimatePresence>
+
+            <button
+              type="submit"
+              disabled={isSubmitting || isSent}
+              className={cn(
+                "w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all active:scale-[0.98]",
+                isSent 
+                  ? "bg-green-500/20 border border-green-500/50 text-green-400 cursor-default"
+                  : "bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-900/20 hover:shadow-purple-700/40"
+              )}
+            >
+              {isSubmitting ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : isSent ? (
+                <>
+                  <CheckCircle2 size={20} />
+                  Message Sent!
+                </>
+              ) : (
+                <>
+                  <Send size={18} />
+                  Send Message
+                </>
+              )}
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
 const Footer = () => {
   return (
-    <footer id="contact" className="py-20 border-t border-purple-500/10">
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
-        <div className="text-center md:text-left">
-          <h2 className="text-2xl font-bold mb-2">Krish Das</h2>
-          <p className="opacity-50 text-sm">Crafting digital experiences with purpose.</p>
-        </div>
-        
-        <div className="text-center md:text-right">
-          <p className="text-xs opacity-40">&copy; {new Date().getFullYear()} Krish Das. All rights reserved.</p>
-          <p className="text-[10px] opacity-30 mt-1">Designed & Developed by Krish</p>
+    <footer className="py-12 border-t border-purple-500/10">
+      <div className="max-w-7xl mx-auto px-6 h-full">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex flex-col items-center md:items-start gap-2">
+            <div className="text-2xl font-bold accent-text">Krish Das</div>
+            <p className="opacity-50 text-sm">Building software for the next generation.</p>
+          </div>
+
+          <div className="flex items-center gap-6 font-medium text-xs tracking-widest uppercase opacity-60">
+            <a href="#home" className="hover:text-purple-400 transition-colors">Home</a>
+            <a href="#about" className="hover:text-purple-400 transition-colors">Experience</a>
+            <a href="#projects" className="hover:text-purple-400 transition-colors">Projects</a>
+            <a href="#contact" className="hover:text-purple-400 transition-colors">Contact</a>
+          </div>
+
+          <div className="text-center md:text-right flex flex-col gap-1">
+            <p className="text-xs opacity-40">&copy; {new Date().getFullYear()} Krish Das</p>
+            <p className="text-[10px] opacity-30">Designed & Handcrafted with ❤️</p>
+          </div>
         </div>
       </div>
     </footer>
@@ -579,6 +830,7 @@ export default function App() {
           <Projects />
           <AchievementsAndCertifications />
           <HobbiesAndLanguages />
+          <Contact />
         </main>
 
         <Footer />
