@@ -47,29 +47,39 @@ import HighlightCard from "@/components/ui/highlight-card";
 const PROJECTS = [
   {
     id: "1",
+    title: "SkyCastPro: Weather Web",
+    description: "A futuristic meteorology dashboard integrating OpenWeatherMap and Pixabay APIs for real-time weather tracking with dynamic visual backgrounds.",
+    image: "https://images.unsplash.com/photo-1592210454359-9043f067919b?auto=format&fit=crop&q=80&w=1000",
+    tags: ["React", "API", "Tailwind", "Pixabay"],
+    githubUrl: "https://github.com/Krish629/SkyCastPro-Weather-Web-For-The-Future",
+    liveUrl: "https://skycastpro-zeta.vercel.app",
+    category: "Web"
+  },
+  {
+    id: "2",
     title: "Password Generator & Checker",
     description: "A robust security tool for generating complex passwords and analyzing their strength against common attack vectors.",
-    image: "https://picsum.photos/seed/security/800/600",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000",
     tags: ["React", "Security", "Tailwind"],
     githubUrl: "https://github.com/Krish629/Password_Generator_-_Checker/blob/main/index.html",
     liveUrl: "https://password-generator-checker-olive.vercel.app",
     category: "Web"
   },
   {
-    id: "2",
+    id: "3",
     title: "Encryption & Decryption Tool",
     description: "A specialized utility for secure data handling, providing various algorithms to encrypt and decrypt sensitive information.",
-    image: "https://picsum.photos/seed/encryption/800/600",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1000",
     tags: ["JavaScript", "Cryptography", "Tool"],
     githubUrl: "https://github.com/Krish629/Encryption_Decryption_Tool/blob/main/index.html",
     liveUrl: "https://encryption-decryption-tool-phi.vercel.app",
     category: "Web"
   },
   {
-    id: "3",
+    id: "4",
     title: "Krrish4 Single Player Game",
     description: "An immersive single-player game developed using Python and Pygame, featuring custom mechanics and dynamic gameplay.",
-    image: "https://picsum.photos/seed/game/800/600",
+    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1000",
     tags: ["Python", "Pygame", "Game Dev"],
     githubUrl: "https://github.com/Krish629/Krrish4-Single-Player-Game/blob/main/main.py",
     liveUrl: "#",
@@ -82,7 +92,7 @@ const EDUCATION = [
     id: "1",
     title: "Bachelor of Computer Applications (BCA)",
     institution: "Inspiria Knowledge Campus – Maulana Abul Kalam Azad University of Technology, West Bengal",
-    year: "2024 – 2028(Expected)",
+    year: "2024 – 2028 (Expected)",
     description: "Focusing on core computer science principles and application development.",
     grade: "Current SGPA: 8.67"
   },
@@ -264,11 +274,12 @@ const About = () => {
             key={edu.id}
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
+            whileHover={{ x: 10 }}
             viewport={{ once: true }}
-            transition={{ delay: idx * 0.1 }}
-            className="relative pl-12 border-l-2 border-purple-500/20"
+            transition={{ delay: idx * 0.1, duration: 0.3 }}
+            className="relative pl-12 border-l-2 border-purple-500/20 group cursor-default"
           >
-            <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-purple-500 border-4 border-[var(--bg-primary)]" />
+            <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-purple-500 border-4 border-[var(--bg-primary)] group-hover:scale-150 transition-transform" />
             <span className="text-sm font-bold text-purple-500 uppercase tracking-widest">{edu.year}</span>
             <h3 className="text-2xl font-bold mt-2">{edu.title}</h3>
             <p className="text-lg opacity-60 mt-1">{edu.institution}</p>
@@ -383,14 +394,20 @@ const Projects = () => {
               className="glass-card overflow-hidden group rounded-3xl"
             >
               <div className="aspect-[16/10] overflow-hidden relative">
-                <img src={project.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <img 
+                  src={project.image} 
+                  alt={project.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                />
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                  <a href={project.githubUrl} target="_blank" className="p-3 glass-card rounded-full hover:bg-purple-500/20 transition-colors">
+                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="p-3 glass-card rounded-full hover:bg-purple-500/20 transition-colors" title="View Source">
                     <Github size={20} />
                   </a>
-                  <a href={project.liveUrl} target="_blank" className="p-3 glass-card rounded-full hover:bg-purple-500/20 transition-colors">
-                    <ExternalLink size={20} />
-                  </a>
+                  {project.liveUrl !== "#" && (
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="p-3 glass-card rounded-full hover:bg-purple-500/20 transition-colors" title="Live Preview">
+                      <ExternalLink size={20} />
+                    </a>
+                  )}
                 </div>
               </div>
               <div className="p-8">
@@ -525,6 +542,25 @@ export default function App() {
         showPreloader ? "opacity-0" : "opacity-100"
       )}>
         <CustomCursor />
+        
+        {/* Sticky Profile Icon */}
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1, duration: 0.8, type: "spring" }}
+          className="fixed top-6 left-6 z-[60] w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-purple-500/30 shadow-2xl backdrop-blur-md group hover:border-purple-500 transition-all duration-300"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <img 
+            src="/krish.jpg"
+            alt="Krish Das"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = `krish.jpg`;
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        </motion.div>
         
         <motion.div 
           className="fixed top-0 left-0 right-0 h-1 accent-gradient z-[100] origin-left"
